@@ -1,13 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
-    <script type="text/babel" >
-        "use strict";
+  <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/babel" >
+  ()=> { //IIFE
+    "use strict";
+    //"globals" vvv
+    //globalize socket? rn it's in init. 
     
-    </script>
-</head>
-<body>
+    //end globals ^^^
+    
+    
+    const updateServer = (socket) => {
+      const growFroggo = {
+        incrementSize: 0.1,
+        incrementGreen: 10,
+      };  
+      console.log('in updateServer');
+      socket.emit('updateToServer', growFroggo);//not working
+    };
+    
+    
+    //called by socket.emit('update') on the server side
+    const updateLocal = (data) => {
+      
+      console.log(data);
+      const myPara = document.querySelector("#myPara");
+      const froggo = document.querySelector("#froggo");
+      //message and css changes
+      froggo.innerHTML = `${data.message} ${ data.froggoSize}`;
+      myPara.style.color = `rgb(25,${data.green},25)`;
+      myPara.style.fontSize = data.froggoSize + "em";      
+    };
+    
+    
+    
+    //INIT
+    const init = () =>{//oh shit whaddup
+      const socket = io.connect();
 
+      //CONNECT      
+      socket.on('connect', () => {
+        setInterval(updateServer, 1200, socket); //why.the.flip.is.it.not.doing.the.thing.
+        window.addEventListener('click', ()=>{
+        updateServer(socket);
+      });
+      });
+      //when update is emited on the server side run updateLocal
+      socket.on('update', updateLocal);
+      document.querySelector("#clearButton").addEventListener('click', ()=>{
+        socket.emit('clear');
+      });
+      
+    };
+    //reach inside and you will find a special friend and a boy
+    window.onload = init;
+    
+  }();//END IIFE
+  </script>
+  <style>
+    html, body{
+      text-align: center;
+    }
+    #alignMe{
+      position: fixed;
+      top:25%;
+      transform: translateY(-50%);
+      transform: translateX(-50%);
+
+      text-align: center;
+    }
+    #myPara{
+      text-align: center;
+      display: block;
+      margin: auto;
+      color: green;
+      font-size: .5em;
+    }
+    #clearButton{
+      position: absolute;
+      bottom: 5%;
+      z-index: 10;
+      transform: translateX(-50%);
+
+    }
+    #foggo{
+      text-align: center;
+
+    }
+  </style>
+  <title>Frog!</title>  
+</head>
+  
+<body>
+<span id="alignMe">  
+  <p id="myPara">@..@<br />(-----)<br />( >__< )<br /> ^^ ~~ ^^ </p>
+  <p id="froggo">froggo is small</p>
+</span>
+<input id="clearButton" type="button" value="Clear">
 </body>
 </html>
