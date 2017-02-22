@@ -29,19 +29,20 @@ const onJoined = (sock) => {
   });
 };
 
-
-const onUpdate = (sock) => {
-  const socket = sock;
-
-  const serverFroggo = {
+const serverFroggo = {
     froggoSize: 0.5,
     green: 50,
     message: 'froggo is',
   };
 
+const onUpdate = (sock) => {
+  const socket = sock;
+
+  
+
   socket.on('updateToServer', (data) => {
-    console.log('in updateToServer');
-    console.dir(data);
+    //console.log('in updateToServer');
+    //console.dir(data);
     console.dir(serverFroggo);
 
     serverFroggo.froggoSize += data.incrementSize;
@@ -50,8 +51,8 @@ const onUpdate = (sock) => {
       serverFroggo.green = 50;
     }// it's not easy being green
 
-    //io.sockets.in('room1').emit('update', serverFroggo);
-     socket.emit('update', serverFroggo);//calls updateLocal on client side
+    io.sockets.in('room1').emit('update', serverFroggo);
+    // socket.emit('update', serverFroggo);// calls updateLocal on client side
   });
   socket.on('clear', () => {
     console.log('clear called');

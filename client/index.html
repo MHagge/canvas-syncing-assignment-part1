@@ -14,10 +14,10 @@
     
     const updateServer = (socket) => {
       const growFroggo = {
-        incrementSize: 0.1,
+        incrementSize: 5.0,
         incrementGreen: 10,
       };  
-      console.log('in updateServer');
+      //console.log('in updateServer');
       socket.emit('updateToServer', growFroggo);//not working
     };
     
@@ -29,9 +29,9 @@
       const myPara = document.querySelector("#myPara");
       const froggo = document.querySelector("#froggo");
       //message and css changes
-      froggo.innerHTML = `${data.message} ${ data.froggoSize}`;
+      froggo.innerHTML = `${data.message} ${ data.froggoSize} years old`;//there is no point of the message lmao :) 
       myPara.style.color = `rgb(25,${data.green},25)`;
-      myPara.style.fontSize = data.froggoSize + "em";      
+      myPara.style.fontSize = data.froggoSize + "px";      
     };
     
     
@@ -42,7 +42,13 @@
 
       //CONNECT      
       socket.on('connect', () => {
-        setInterval(updateServer, 1200, socket); //why.the.flip.is.it.not.doing.the.thing.
+         socket.emit('join');
+        //setInterval(updateServer, 1200, socket);//not working
+        /*setInterval(()=>{
+          updateServer(socket)
+        }(1200));*///still not working
+        setInterval( ()=>{updateServer(socket)} , (3000));
+        //why.the.flip.is.it.not.doing.the.thing.
         window.addEventListener('click', ()=>{
         updateServer(socket);
       });
@@ -76,7 +82,7 @@
       display: block;
       margin: auto;
       color: green;
-      font-size: .5em;
+      font-size: .5px;
     }
     #clearButton{
       position: absolute;
@@ -98,6 +104,6 @@
   <p id="myPara">@..@<br />(-----)<br />( >__< )<br /> ^^ ~~ ^^ </p>
   <p id="froggo">froggo is small</p>
 </span>
-<input id="clearButton" type="button" value="Clear">
+<input id="clearButton" type="button" value="Kill">
 </body>
 </html>
