@@ -30,7 +30,7 @@ const onJoined = (sock) => {
 };
 
 const serverFroggo = {
-    froggoSize: 0.5,
+    froggoSize: 1.0,
     green: 50,
     message: 'froggo is',
   };
