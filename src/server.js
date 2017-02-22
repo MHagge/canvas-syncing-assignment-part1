@@ -56,7 +56,7 @@ const onUpdate = (sock) => {
   });
   socket.on('clear', () => {
     console.log('clear called');
-    serverFroggo.froggoSize = 0.5;
+    serverFroggo.froggoSize = 1.0;
 
     io.sockets.in('room1').emit('update', serverFroggo);
     // socket.emit('update', serverFroggo);
