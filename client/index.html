@@ -14,7 +14,7 @@
     
     const updateServer = (socket) => {
       const growFroggo = {
-        incrementSize: 5.0,
+        incrementSize: 1.0,
         incrementGreen: 10,
       };  
       //console.log('in updateServer');
@@ -47,7 +47,7 @@
         /*setInterval(()=>{
           updateServer(socket)
         }(1200));*///still not working
-        setInterval( ()=>{updateServer(socket)} , (3000));
+        setInterval( ()=>{updateServer(socket)} , (2s000));
         //why.the.flip.is.it.not.doing.the.thing.
         window.addEventListener('click', ()=>{
         updateServer(socket);
